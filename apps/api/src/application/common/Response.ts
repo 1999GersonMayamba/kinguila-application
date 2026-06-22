@@ -10,6 +10,8 @@ export class Response<T> {
     readonly errors: string[],
     /** Status HTTP sugerido. O controller pode respeitá-lo ou sobrepô-lo. */
     readonly statusCode: number,
+    /** Código de erro legível por máquina (ex.: ACCOUNT_NOT_CONFIRMED). */
+    readonly code?: string,
   ) {}
 
   static ok<T>(data: T, message = 'Operação concluída com sucesso', statusCode = 200): Response<T> {
@@ -20,15 +22,20 @@ export class Response<T> {
     return new Response<T>(true, message, data, [], 201);
   }
 
-  static fail<T>(message: string, errors: string[] = [], statusCode = 400): Response<T> {
-    return new Response<T>(false, message, null, errors, statusCode);
+  static fail<T>(
+    message: string,
+    errors: string[] = [],
+    statusCode = 400,
+    code?: string,
+  ): Response<T> {
+    return new Response<T>(false, message, null, errors, statusCode, code);
   }
 
   static notFound<T>(message = 'Recurso não encontrado'): Response<T> {
     return new Response<T>(false, message, null, [], 404);
   }
 
-  static forbidden<T>(message = 'Operação não autorizada'): Response<T> {
-    return new Response<T>(false, message, null, [], 403);
+  static forbidden<T>(message = 'Operação não autorizada', code?: string): Response<T> {
+    return new Response<T>(false, message, null, [], 403, code);
   }
 }

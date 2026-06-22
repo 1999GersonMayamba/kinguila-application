@@ -9,11 +9,20 @@ import SocialLoginButtons from '../components/SocialLoginButtons.vue';
 import { useAuthForm } from '../composables/useAuthForm';
 
 const router = useRouter();
-const { loading, error, submit, auth } = useAuthForm();
+const { loading, error, errorCode, submit, auth } = useAuthForm();
 const form = reactive({ email: '', password: '' });
 
 function onSubmit() {
   submit(() => auth.login({ ...form }));
+}
+
+/** Conta não confirmada: leva o utilizador ao ecrã de verificação com o email. */
+function goToVerification() {
+  router.push({ name: 'verify-email', state: { email: form.email } });
+}
+
+function goToReset() {
+  router.push({ name: 'reset-password' });
 }
 </script>
 
@@ -50,11 +59,19 @@ function onSubmit() {
             required
           >
             <template #labelAction>
-              <button type="button" class="login__forgot">Esqueceu?</button>
+              <button type="button" class="login__forgot" @click="goToReset">Esqueceu?</button>
             </template>
           </BaseInput>
 
           <p v-if="error" class="login__error">{{ error }}</p>
+          <button
+            v-if="errorCode === 'ACCOUNT_NOT_CONFIRMED'"
+            type="button"
+            class="login__verify-cta"
+            @click="goToVerification"
+          >
+            Verificar a minha conta →
+          </button>
 
           <BaseButton type="submit" variant="primary" block :disabled="loading">
             {{ loading ? 'A entrar…' : 'Entrar' }}
@@ -137,6 +154,19 @@ function onSubmit() {
   margin: 0;
   font-size: 0.85rem;
   color: var(--k-destructive, #d4183d);
+}
+.login__verify-cta {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--k-navy);
+  cursor: pointer;
+}
+.login__verify-cta:hover {
+  opacity: 0.8;
 }
 .login__divider {
   display: flex;

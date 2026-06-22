@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { integer, jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -8,6 +8,10 @@ export const users = pgTable('users', {
   passwordHash: text('password_hash').notNull(),
   // Papéis como array de texto (enums persistidos como texto).
   roles: jsonb('roles').$type<string[]>().notNull().default(sql`'[]'::jsonb`),
+  // Null = conta por confirmar. Preenchido ao validar o código de email.
+  emailConfirmedAt: timestamp('email_confirmed_at', { withTimezone: true }),
+  // Incrementado no logout para invalidar tokens (access + refresh) já emitidos.
+  tokenVersion: integer('token_version').notNull().default(0),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
