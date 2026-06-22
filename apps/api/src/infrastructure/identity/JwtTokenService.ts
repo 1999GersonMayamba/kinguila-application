@@ -2,6 +2,7 @@ import { sign, verify } from 'hono/jwt';
 import type {
   ITokenService,
   IssuedTokens,
+  RefreshClaims,
   TokenClaims,
 } from '../../application/interfaces/identity/ITokenService';
 
@@ -37,8 +38,15 @@ export class JwtTokenService implements ITokenService {
       { ...claims, type: 'access', exp: now + this.accessTtl, iat: now },
       this.secret,
     );
+    // O refresh token também carrega o tokenVersion, para o logout o invalidar.
     const refreshToken = await sign(
-      { sub: claims.sub, type: 'refresh', exp: now + this.refreshTtl, iat: now },
+      {
+        sub: claims.sub,
+        tokenVersion: claims.tokenVersion,
+        type: 'refresh',
+        exp: now + this.refreshTtl,
+        iat: now,
+      },
       this.secret,
     );
     return { accessToken, refreshToken };
@@ -54,6 +62,22 @@ export class JwtTokenService implements ITokenService {
         sub: String(payload.sub),
         email: String(payload.email ?? ''),
         roles: Array.isArray(payload.roles) ? (payload.roles as string[]) : [],
+        tokenVersion: Number(payload.tokenVersion ?? 0),
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  async verifyRefresh(token: string): Promise<RefreshClaims | null> {
+    try {
+      const payload = await verify(token, this.secret, 'HS256');
+      if (payload.type !== 'refresh') {
+        return null;
+      }
+      return {
+        sub: String(payload.sub),
+        tokenVersion: Number(payload.tokenVersion ?? 0),
       };
     } catch {
       return null;

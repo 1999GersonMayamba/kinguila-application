@@ -15,6 +15,8 @@ function mapRow(row: UserRow): User {
     email: row.email,
     passwordHash: row.passwordHash,
     roles: row.roles,
+    emailConfirmedAt: row.emailConfirmedAt,
+    tokenVersion: row.tokenVersion,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   };
@@ -30,6 +32,8 @@ export class UserRepository
       email: data.email,
       passwordHash: data.passwordHash,
       roles: data.roles,
+      emailConfirmedAt: data.emailConfirmedAt,
+      tokenVersion: data.tokenVersion,
     }));
   }
 

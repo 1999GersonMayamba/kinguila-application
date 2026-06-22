@@ -6,4 +6,5 @@ export interface Role {
 
 /** Papéis conhecidos do sistema. */
 export const ROLE_ADMIN = 'admin';
-export const ROLE_USER = 'user';
+/** Role atribuída por omissão a quem cria conta na plataforma. */
+export const ROLE_CLIENT = 'client';

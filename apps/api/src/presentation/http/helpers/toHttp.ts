@@ -13,6 +13,7 @@ export function toHttp<T>(c: AppContext, result: ServiceResponse<T>) {
     message: result.message,
     data: result.data,
     errors: result.errors,
+    ...(result.code ? { code: result.code } : {}),
   };
   return c.json(body, result.statusCode as ContentfulStatusCode);
 }

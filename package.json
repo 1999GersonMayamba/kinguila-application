@@ -5,6 +5,7 @@
   "description": "Plataforma P2P de compra e venda de divisas entre particulares.",
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
+    "dev": "concurrently -k -n api,web -c blue,green \"bun run dev:api\" \"bun run dev:web\"",
     "dev:api": "bun run --cwd apps/api dev",
     "dev:web": "bun run --cwd apps/web dev",
     "build": "bun run --cwd packages/contracts build && bun run --cwd apps/api build && bun run --cwd apps/web build",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "concurrently": "^9.1.0",
     "typescript": "^5.7.0"
   },
   "engines": {

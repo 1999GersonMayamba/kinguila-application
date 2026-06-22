@@ -2,7 +2,7 @@
 import BaseButton from '@/shared/components/BaseButton.vue';
 import BaseInput from '@/shared/components/BaseInput.vue';
 import { X } from 'lucide-vue-next';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthForm } from '../composables/useAuthForm';
 
@@ -11,9 +11,25 @@ const { loading, error, submit, auth } = useAuthForm();
 
 // `phone` é apenas visual nesta fase (o RegisterRequest ainda não o inclui).
 const form = reactive({ name: '', email: '', phone: '', password: '' });
+const pendingEmail = ref('');
 
-function onSubmit() {
-  submit(() => auth.register({ name: form.name, email: form.email, password: form.password }));
+async function onSubmit() {
+  // O registo não autentica: encaminha para a verificação de email. O email vai
+  // em router state (não na query) para não vazar em logs/histórico.
+  await submit(
+    async () => {
+      const result = await auth.register({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+      });
+      pendingEmail.value = result.email;
+    },
+    { redirectTo: null },
+  );
+  if (!error.value && pendingEmail.value) {
+    router.push({ name: 'verify-email', state: { email: pendingEmail.value } });
+  }
 }
 </script>
 

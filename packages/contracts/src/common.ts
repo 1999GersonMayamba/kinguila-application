@@ -7,6 +7,8 @@ export interface ApiResponse<T> {
   message: string;
   data: T | null;
   errors: string[];
+  /** Código de erro legível por máquina (ex.: ACCOUNT_NOT_CONFIRMED). Opcional. */
+  code?: string;
 }
 
 /** Resultado paginado genérico. */

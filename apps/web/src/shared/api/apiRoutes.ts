@@ -6,6 +6,13 @@ export const apiRoutes = {
     register: `${BASE}/auth/register`,
     login: `${BASE}/auth/login`,
     me: `${BASE}/auth/me`,
+    confirmEmail: `${BASE}/auth/confirm-email`,
+    resendCode: `${BASE}/auth/resend-code`,
+    requestPasswordReset: `${BASE}/auth/request-password-reset`,
+    validateResetToken: `${BASE}/auth/validate-reset-token`,
+    resetPassword: `${BASE}/auth/reset-password`,
+    refresh: `${BASE}/auth/refresh`,
+    logout: `${BASE}/auth/logout`,
   },
   currencies: `${BASE}/currencies`,
   offers: {

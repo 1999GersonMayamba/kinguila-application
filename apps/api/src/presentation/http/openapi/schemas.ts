@@ -80,6 +80,13 @@ export const authUserSchema = z
   })
   .openapi('AuthUser');
 
+export const registerResponseSchema = z
+  .object({
+    email: z.string(),
+    verificationRequired: z.boolean(),
+  })
+  .openapi('RegisterResponse');
+
 /** Schema dos parâmetros de path com `:id`. */
 export const idParamSchema = z.object({
   id: z.string().uuid(),
