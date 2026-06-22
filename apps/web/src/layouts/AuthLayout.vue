@@ -3,16 +3,6 @@ import { RouterView } from 'vue-router';
 </script>
 
 <template>
-  <div class="auth-layout">
-    <RouterView />
-  </div>
+  <!-- Os ecrãs de auth controlam o seu próprio fundo full-screen. -->
+  <RouterView />
 </template>
-
-<style scoped>
-.auth-layout {
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
-</style>
