@@ -33,3 +33,7 @@ coverage/
 
 # Bun
 bun.lockb
+
+# Git worktrees (criados localmente; nunca versionar)
+.worktrees/
+.claude/worktrees/
