@@ -1,0 +1,10 @@
+# Configuração do Bun para o monorepo Kinguila.
+# Documentação: https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Linker hoisted: mais compatível com Windows (evita erros de permissão do isolated).
+linker = "hoisted"
+
+[test]
+# Carrega variáveis de .env.test automaticamente quando existir.
+preload = []

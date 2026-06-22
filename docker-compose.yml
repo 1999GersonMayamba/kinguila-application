@@ -1,0 +1,24 @@
+# Infraestrutura local de desenvolvimento.
+# Sobe apenas o PostgreSQL; a API e o front-end correm com o Bun no host.
+#   docker compose up -d
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kinguila-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kinguila
+      POSTGRES_PASSWORD: kinguila
+      POSTGRES_DB: kinguila
+    ports:
+      - '5432:5432'
+    volumes:
+      - kinguila_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U kinguila -d kinguila']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  kinguila_pgdata:

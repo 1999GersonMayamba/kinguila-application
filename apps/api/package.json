@@ -1,0 +1,30 @@
+{
+  "name": "@kinguila/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/main.ts",
+    "start": "bun run src/main.ts",
+    "build": "bun build src/main.ts --target bun --outdir dist",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test ./tests",
+    "test:watch": "bun test --watch ./tests",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "bun run src/infrastructure/database/seed.ts",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@kinguila/contracts": "workspace:*",
+    "drizzle-orm": "^0.36.0",
+    "hono": "^4.6.0",
+    "postgres": "^3.4.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.0",
+    "drizzle-kit": "^0.28.0",
+    "typescript": "^5.7.0"
+  }
+}
