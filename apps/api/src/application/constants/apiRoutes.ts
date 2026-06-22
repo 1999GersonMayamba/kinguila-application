@@ -7,6 +7,10 @@ const BASE = '/api/v1';
 export const apiRoutes = {
   base: BASE,
   health: '/health',
+  docs: {
+    ui: '/docs',
+    json: '/openapi.json',
+  },
   auth: {
     register: `${BASE}/auth/register`,
     login: `${BASE}/auth/login`,

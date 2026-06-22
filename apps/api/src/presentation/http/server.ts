@@ -1,3 +1,4 @@
+import { swaggerUI } from '@hono/swagger-ui';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
@@ -5,6 +6,7 @@ import { apiRoutes } from '../../application/constants/apiRoutes';
 import type { Container } from '../../composition/container';
 import { env } from '../../config/env';
 import { errorHandler } from './middlewares/errorHandler';
+import { buildOpenApiDocument } from './openapi/document';
 import { registerAuthRoutes } from './routes/auth.routes';
 import { registerCurrencyRoutes } from './routes/currency.routes';
 import { registerOfferRoutes } from './routes/offer.routes';
@@ -21,6 +23,11 @@ export function createServer(container: Container) {
   app.get(apiRoutes.health, (c) =>
     c.json({ succeeded: true, message: 'ok', data: { status: 'up' }, errors: [] }),
   );
+
+  // Documentação da API: JSON OpenAPI + Swagger UI. Gerado uma vez no arranque.
+  const openApiDocument = buildOpenApiDocument();
+  app.get(apiRoutes.docs.json, (c) => c.json(openApiDocument));
+  app.get(apiRoutes.docs.ui, swaggerUI({ url: apiRoutes.docs.json }));
 
   const { controllers, middlewares } = container;
   registerAuthRoutes(app, controllers.authController, middlewares.requireAuth);

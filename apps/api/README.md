@@ -35,6 +35,14 @@ implementa as interfaces da `application`. Detalhe e padrões em
 | `bun run typecheck`   | Verificação de tipos                             |
 | `bun run test`        | Testes (bun:test)                                |
 
+## Documentação interativa
+
+- Swagger UI: http://localhost:3333/docs
+- OpenAPI JSON: http://localhost:3333/openapi.json
+
+**Toda rota nova tem de ser documentada** em `src/presentation/http/openapi/paths/`.
+Ver [`../../docs/api-docs.md`](../../docs/api-docs.md).
+
 ## Endpoints (v1)
 
 | Método | Rota                     | Auth | Descrição                       |

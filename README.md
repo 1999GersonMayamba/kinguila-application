@@ -92,6 +92,7 @@ Lê primeiro o [`CLAUDE.md`](CLAUDE.md). Ele aponta para as _skills_ em
 - [`docs/architecture.md`](docs/architecture.md) — arquitetura do back-end
 - [`docs/frontend-architecture.md`](docs/frontend-architecture.md) — arquitetura do front-end
 - [`docs/integrations.md`](docs/integrations.md) — integrações com APIs externas
+- [`docs/api-docs.md`](docs/api-docs.md) — OpenAPI + Swagger UI (documentar rotas)
 - [`docs/testing.md`](docs/testing.md) — estratégia e camada de testes
 - [`docs/domain-glossary.md`](docs/domain-glossary.md) — linguagem ubíqua do domínio
 - [`docs/getting-started.md`](docs/getting-started.md) — guia detalhado de arranque

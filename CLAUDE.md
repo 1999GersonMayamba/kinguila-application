@@ -32,8 +32,11 @@ A plataforma une compradores e vendedores de divisas. Um vendedor publica uma **
    [`docs/testing.md`](docs/testing.md) e a skill `write-tests`.
 8. **Segue as convenções.** Nomenclatura e princípios de Clean Architecture estão em
    [`docs/conventions.md`](docs/conventions.md) — é leitura obrigatória.
-9. **Valida antes de terminar:** `bun run typecheck`, `bun run lint` e `bun run test`. Não
-   corras a app contra base de dados de produção.
+9. **Toda rota criada tem de ser documentada** na camada OpenAPI
+   (`presentation/http/openapi/paths/*.docs.ts`), aparecendo na Swagger UI (`/docs`). Ver
+   [`docs/api-docs.md`](docs/api-docs.md).
+10. **Valida antes de terminar:** `bun run typecheck`, `bun run lint` e `bun run test`. Não
+    corras a app contra base de dados de produção.
 
 ## Mapa do monorepo
 
@@ -74,6 +77,9 @@ Quando a tarefa corresponder, **segue a skill passo a passo**:
   Cobre também adicionar uma rota nova a uma integração existente. Ver
   [`docs/integrations.md`](docs/integrations.md).
 - **`write-tests`** — escrever testes na camada dedicada `apps/api/tests/`.
+- **`code-review`** — rever uma alteração contra as regras de ouro, Clean Architecture e o
+  gate (typecheck/lint/testes/OpenAPI); paraleliza por dimensões em diffs grandes. Usar
+  antes de integrar uma fatia ou ao rever trabalho de um subagente.
 - **`run-migrations`** — comandos exatos do Drizzle Kit (executados **manualmente** pelo
   utilizador).
 - **`add-frontend-feature`** — criar uma _feature_ nova no front-end Vue seguindo a
@@ -94,6 +100,8 @@ Quando a tarefa corresponder, **segue a skill passo a passo**:
   isolados. Ver [`docs/integrations.md`](docs/integrations.md).
 - **Testes:** em `apps/api/tests/` (espelha `src/`), com fakes das interfaces / `fetch`
   mockado. Ver [`docs/testing.md`](docs/testing.md).
+- **Documentação de rotas:** cada rota é registada em `openapi/paths/*.docs.ts` e aparece
+  na Swagger UI. Ver [`docs/api-docs.md`](docs/api-docs.md).
 
 ## Documentação de referência
 
@@ -101,6 +109,7 @@ Quando a tarefa corresponder, **segue a skill passo a passo**:
 - [`docs/architecture.md`](docs/architecture.md) — arquitetura do back-end
 - [`docs/frontend-architecture.md`](docs/frontend-architecture.md) — arquitetura do front-end
 - [`docs/integrations.md`](docs/integrations.md) — integrações externas
+- [`docs/api-docs.md`](docs/api-docs.md) — OpenAPI + Swagger UI (documentar rotas)
 - [`docs/testing.md`](docs/testing.md) — estratégia de testes
 - [`docs/domain-glossary.md`](docs/domain-glossary.md) — linguagem ubíqua
 

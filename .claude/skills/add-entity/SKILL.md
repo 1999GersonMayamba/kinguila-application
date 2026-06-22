@@ -59,6 +59,10 @@ padrão deles. Substitui `Foo` pelo nome real (inglês, singular, PascalCase).
 - Cria `src/presentation/http/routes/foo.routes.ts` que regista as rotas no app Hono
   usando `apiRoutes.foo.*`, `authMiddleware` e `validate(...)`.
 - Liga o registo das rotas em `src/presentation/http/server.ts`.
+- **Documenta as rotas (OBRIGATÓRIO):** cria `src/presentation/http/openapi/paths/foo.docs.ts`
+  com um `registry.registerPath(...)` por rota (request via schema Zod do validator;
+  resposta via `apiResponseSchema(...)`) e regista-o em `openapi/document.ts`. Ver
+  [`docs/api-docs.md`](../../../docs/api-docs.md). Confirma em `/docs`.
 
 ## 9. Composition root (OBRIGATÓRIO)
 Em `src/composition/container.ts`:
@@ -95,6 +99,7 @@ bun run test
 - [ ] Interface + implementação do serviço (`Response<T>`)
 - [ ] Rotas em `apiRoutes`
 - [ ] Controller + rotas registadas no `server.ts`
+- [ ] Rotas documentadas em `openapi/paths/foo.docs.ts` (visíveis em `/docs`)
 - [ ] Repositório, serviço e controller ligados no `composition/container.ts`
 - [ ] Teste do serviço em `tests/` (com fakes)
 - [ ] `bun run typecheck`, `bun run lint` e `bun run test` sem erros

@@ -82,6 +82,8 @@ e o `composition` injeta as implementações concretas.
 - `middlewares/` — `authMiddleware` (valida JWT, injeta o utilizador), `errorHandler`,
   `validate` (Zod).
 - `server.ts` — cria o app Hono, aplica middlewares globais e regista as rotas.
+- `openapi/` — camada de documentação (OpenAPI + Swagger UI) que reaproveita os schemas
+  Zod. **Cada rota tem de ser documentada aqui.** Ver [`api-docs.md`](api-docs.md).
 
 ### composition (`src/composition/container.ts`)
 - _Composition root_: o único sítio que conhece implementações concretas. Instancia o
