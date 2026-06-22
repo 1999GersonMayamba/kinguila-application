@@ -1,0 +1,44 @@
+/**
+ * Tokens de marca Kinguila (extraídos do design Figma).
+ * Cores, raios, sombras e tipografia partilhadas por toda a UI.
+ */
+:root {
+  /* Marca */
+  --k-navy: #1e2a5a;
+  --k-navy-700: #2d3e7a;
+  --k-blue: #5b7be8;
+  --k-green: #1faf75;
+  --k-yellow: #f5b800;
+
+  /* Texto / neutros */
+  --k-ink: #000000;
+  --k-text: #1e2a5a;
+  --k-gray-700: #374151;
+  --k-gray-600: #4b5563;
+  --k-gray-500: #6b7280;
+  --k-gray-400: #9ca3af;
+  --k-gray-300: #d1d5db;
+  --k-gray-200: #e5e7eb;
+  --k-gray-100: #f3f4f6;
+
+  /* Superfícies */
+  --k-surface: #ffffff;
+  --k-input-bg: #fafafa;
+
+  /* Raios (alinhados ao Tailwind usado no design) */
+  --k-radius-lg: 0.5rem;
+  --k-radius-xl: 0.75rem;
+  --k-radius-2xl: 1rem;
+  --k-radius-3xl: 1.5rem;
+
+  /* Sombras */
+  --k-shadow-card: 0 20px 60px rgba(30, 42, 90, 0.12);
+  --k-shadow-soft: 0 10px 40px rgba(30, 42, 90, 0.08);
+
+  /* Tipografia */
+  --k-font: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Gradientes de fundo dos ecrãs */
+  --k-gradient-welcome: linear-gradient(180deg, #ffffff 0%, #ffffff 45%, #5b7be8 100%);
+  --k-gradient-login: linear-gradient(180deg, #ffffff 0%, #ffffff 55%, #1e2a5a 100%);
+}
