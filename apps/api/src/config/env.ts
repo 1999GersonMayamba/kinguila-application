@@ -31,6 +31,10 @@ const envSchema = z
     PASSWORD_RESET_TOKEN_TTL: z.string().default('1h'),
     EMAIL_RESEND_RATE_LIMIT_SECONDS: z.coerce.number().int().positive().default(60),
     EMAIL_CODE_MAX_ATTEMPTS: z.coerce.number().int().positive().default(5),
+
+    // Bootstrap de conta admin (seed idempotente). Vazios = seed de admin ignorado.
+    ADMIN_EMAIL: z.string().default(''),
+    ADMIN_PASSWORD: z.string().default(''),
   })
   .superRefine((value, ctx) => {
     // Em produção, os segredos de email passam a ser obrigatórios (o default '' só

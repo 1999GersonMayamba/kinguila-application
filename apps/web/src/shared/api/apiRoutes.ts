@@ -14,7 +14,20 @@ export const apiRoutes = {
     refresh: `${BASE}/auth/refresh`,
     logout: `${BASE}/auth/logout`,
   },
-  currencies: `${BASE}/currencies`,
+  currencies: {
+    list: `${BASE}/currencies`,
+    listAll: `${BASE}/currencies/all`,
+    byCode: (code: string) => `${BASE}/currencies/${code}`,
+    update: (code: string) => `${BASE}/currencies/${code}`,
+    setEnabled: (code: string) => `${BASE}/currencies/${code}/enabled`,
+  },
+  adminUsers: {
+    list: `${BASE}/admin/users`,
+    byId: (id: string) => `${BASE}/admin/users/${id}`,
+    update: (id: string) => `${BASE}/admin/users/${id}`,
+    setDisabled: (id: string) => `${BASE}/admin/users/${id}/disabled`,
+    resetPassword: (id: string) => `${BASE}/admin/users/${id}/reset-password`,
+  },
   offers: {
     list: `${BASE}/offers`,
     byId: (id: string) => `${BASE}/offers/${id}`,

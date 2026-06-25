@@ -5,6 +5,8 @@ export const currencies = pgTable('currencies', {
   code: text('code').primaryKey(),
   name: text('name').notNull(),
   symbol: text('symbol').notNull(),
+  // Chave de ícone ou URL (string curta); nunca markup. Opcional.
+  icon: text('icon'),
   enabled: boolean('enabled').notNull().default(true),
 });
 

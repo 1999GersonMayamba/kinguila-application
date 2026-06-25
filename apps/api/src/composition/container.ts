@@ -1,3 +1,4 @@
+import { AdminUserService } from '../application/services/AdminUserService';
 import { AuthService } from '../application/services/AuthService';
 import { CurrencyService } from '../application/services/CurrencyService';
 import { EmailVerificationService } from '../application/services/EmailVerificationService';
@@ -15,6 +16,7 @@ import { EmailVerificationCodeRepository } from '../infrastructure/repositories/
 import { OfferRepository } from '../infrastructure/repositories/OfferRepository';
 import { PasswordResetTokenRepository } from '../infrastructure/repositories/PasswordResetTokenRepository';
 import { UserRepository } from '../infrastructure/repositories/UserRepository';
+import { AdminUserController } from '../presentation/http/controllers/AdminUserController';
 import { AuthController } from '../presentation/http/controllers/AuthController';
 import { CurrencyController } from '../presentation/http/controllers/CurrencyController';
 import { OfferController } from '../presentation/http/controllers/OfferController';
@@ -83,6 +85,7 @@ export function buildContainer() {
   );
   const currencyService = new CurrencyService(currencyRepository);
   const offerService = new OfferService(offerRepository, currencyRepository);
+  const adminUserService = new AdminUserService(userRepository, passwordResetService);
 
   // Controllers
   const authController = new AuthController(
@@ -92,13 +95,14 @@ export function buildContainer() {
   );
   const currencyController = new CurrencyController(currencyService);
   const offerController = new OfferController(offerService);
+  const adminUserController = new AdminUserController(adminUserService);
 
   // Middleware de autenticação (valida o JWT e o tokenVersion contra a BD)
   const requireAuth = authMiddleware(tokenService, userRepository);
 
   return {
     db,
-    controllers: { authController, currencyController, offerController },
+    controllers: { authController, currencyController, offerController, adminUserController },
     middlewares: { requireAuth },
     integrations: { exchangeRateProvider, emailProvider },
   };
