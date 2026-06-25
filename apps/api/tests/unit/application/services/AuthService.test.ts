@@ -94,6 +94,7 @@ describe('AuthService.login', () => {
       roles: ['user'],
       emailConfirmedAt: null,
       tokenVersion: 0,
+      disabledAt: null,
     });
 
     const result = await service.login({ email: 'ana@x.com', password: 'segredo12' });
@@ -112,6 +113,7 @@ describe('AuthService.login', () => {
       roles: ['user'],
       emailConfirmedAt: new Date(),
       tokenVersion: 0,
+      disabledAt: null,
     });
 
     const result = await service.login({ email: 'ana@x.com', password: 'segredo12' });
@@ -129,6 +131,7 @@ describe('AuthService.login', () => {
       roles: ['user'],
       emailConfirmedAt: new Date(),
       tokenVersion: 0,
+      disabledAt: null,
     });
 
     const result = await service.login({ email: 'ana@x.com', password: 'errada' });
@@ -148,6 +151,7 @@ describe('AuthService.refresh', () => {
       roles: ['user'],
       emailConfirmedAt: new Date(),
       tokenVersion: 0,
+      disabledAt: null,
     });
     tokens.refreshResult = { sub: user.id, tokenVersion: 0 };
 
@@ -177,6 +181,7 @@ describe('AuthService.refresh', () => {
       roles: ['user'],
       emailConfirmedAt: new Date(),
       tokenVersion: 1,
+      disabledAt: null,
     });
     tokens.refreshResult = { sub: user.id, tokenVersion: 0 }; // versão antiga
 
@@ -197,6 +202,7 @@ describe('AuthService.logout', () => {
       roles: ['user'],
       emailConfirmedAt: new Date(),
       tokenVersion: 0,
+      disabledAt: null,
     });
 
     const result = await service.logout(user.id);

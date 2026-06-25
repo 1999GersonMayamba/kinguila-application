@@ -38,6 +38,16 @@
   /* Tipografia */
   --k-font: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
+  /*
+   * Breakpoints (mobile-first). Nota: variáveis CSS não podem ser usadas dentro de
+   * `@media (...)`, por isso os componentes usam os literais 640px / 1024px; estes
+   * tokens documentam a convenção e servem JS, se necessário.
+   *   --k-bp-md: 640px  → 1 → 2 colunas
+   *   --k-bp-lg: 1024px → sidebar completa (experiência PC)
+   */
+  --k-bp-md: 640px;
+  --k-bp-lg: 1024px;
+
   /* Gradientes de fundo dos ecrãs */
   --k-gradient-welcome: linear-gradient(180deg, #ffffff 0%, #ffffff 45%, #5b7be8 100%);
   --k-gradient-login: linear-gradient(180deg, #ffffff 0%, #ffffff 55%, #1e2a5a 100%);

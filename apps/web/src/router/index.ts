@@ -1,11 +1,12 @@
 import { authRoutes } from '@/features/auth/routes';
 import { useAuthStore } from '@/features/auth/stores/auth.store';
 import { offerRoutes } from '@/features/offers/routes';
+import { settingsRoutes } from '@/features/settings/routes';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [...offerRoutes, ...authRoutes],
+  routes: [...offerRoutes, ...authRoutes, ...settingsRoutes],
 });
 
 /** Guarda de navegação: rotas com meta.requiresAuth exigem sessão. */

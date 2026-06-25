@@ -28,6 +28,7 @@ async function seedUser(users: FakeUserRepository): Promise<User> {
     roles: ['user'],
     emailConfirmedAt: new Date(),
     tokenVersion: 0,
+    disabledAt: null,
   });
 }
 
@@ -91,5 +92,29 @@ describe('PasswordResetService.reset', () => {
 
     expect(result.succeeded).toBe(false);
     expect((await users.findById(user.id))?.passwordHash).toBe('hashed:antiga');
+  });
+});
+
+describe('PasswordResetService.requestForUser (admin)', () => {
+  it('utilizador existente: grava token e envia email', async () => {
+    const { service, users, resetTokens, email } = makeService();
+    const user = await seedUser(users);
+
+    const result = await service.requestForUser(user.id);
+
+    expect(result.succeeded).toBe(true);
+    expect([...resetTokens.store.values()]).toHaveLength(1);
+    expect(email.sent[0]?.to).toBe('rui@x.com');
+  });
+
+  it('utilizador inexistente → 404, sem token nem email', async () => {
+    const { service, resetTokens, email } = makeService();
+
+    const result = await service.requestForUser('nao-existe');
+
+    expect(result.succeeded).toBe(false);
+    expect(result.statusCode).toBe(404);
+    expect([...resetTokens.store.values()]).toHaveLength(0);
+    expect(email.sent).toHaveLength(0);
   });
 });
