@@ -1,4 +1,5 @@
 import { OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
+import { registerAdminUserDocs } from './paths/adminUser.docs';
 import { registerAuthDocs } from './paths/auth.docs';
 import { registerCurrencyDocs } from './paths/currency.docs';
 import { registerOfferDocs } from './paths/offer.docs';
@@ -14,6 +15,7 @@ export function buildOpenApiDocument() {
   registerAuthDocs(context);
   registerCurrencyDocs(context);
   registerOfferDocs(context);
+  registerAdminUserDocs(context);
 
   const generator = new OpenApiGeneratorV3(context.registry.definitions);
 

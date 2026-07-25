@@ -1,5 +1,6 @@
 import type {
   IUserRepository,
+  ListUsersFilters,
   UserInsert,
 } from '../../../src/application/interfaces/repositories/IUserRepository';
 import type { User } from '../../../src/domain/entities/User';
@@ -38,5 +39,24 @@ export class FakeUserRepository implements IUserRepository {
 
   async findByEmail(email: string): Promise<User | null> {
     return [...this.store.values()].find((u) => u.email === email) ?? null;
+  }
+
+  async listPaged(filters: ListUsersFilters): Promise<{ items: User[]; total: number }> {
+    let all = [...this.store.values()];
+    if (filters.name) {
+      const needle = filters.name.toLowerCase();
+      all = all.filter((u) => u.name.toLowerCase().includes(needle));
+    }
+    if (filters.email) {
+      const needle = filters.email.toLowerCase();
+      all = all.filter((u) => u.email.toLowerCase().includes(needle));
+    }
+    if (filters.role) {
+      all = all.filter((u) => u.roles.includes(filters.role as string));
+    }
+    all.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    const total = all.length;
+    const start = (filters.page - 1) * filters.pageSize;
+    return { items: all.slice(start, start + filters.pageSize), total };
   }
 }

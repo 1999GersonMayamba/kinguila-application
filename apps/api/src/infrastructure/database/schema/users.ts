@@ -12,6 +12,8 @@ export const users = pgTable('users', {
   emailConfirmedAt: timestamp('email_confirmed_at', { withTimezone: true }),
   // Incrementado no logout para invalidar tokens (access + refresh) já emitidos.
   tokenVersion: integer('token_version').notNull().default(0),
+  // Null = conta ativa. Preenchido quando um admin desativa a conta.
+  disabledAt: timestamp('disabled_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });

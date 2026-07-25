@@ -5,7 +5,7 @@ import { useAuthStore } from '../stores/auth.store';
 
 interface SubmitOptions {
   /**
-   * Destino após sucesso. `undefined` → vai para `offers` (default de login).
+   * Destino após sucesso. `undefined` → vai para `home` (menu pós-login).
    * `null` → não redireciona (a view trata do encaminhamento, ex.: registo).
    */
   redirectTo?: RouteLocationRaw | null;
@@ -25,7 +25,7 @@ export function useAuthForm() {
     errorCode.value = null;
     try {
       await action();
-      const target = options.redirectTo === undefined ? { name: 'offers' } : options.redirectTo;
+      const target = options.redirectTo === undefined ? { name: 'home' } : options.redirectTo;
       if (target) {
         await router.push(target);
       }

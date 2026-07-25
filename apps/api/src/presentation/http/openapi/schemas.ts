@@ -7,6 +7,7 @@ export const tags = {
   auth: 'Auth',
   currencies: 'Currencies',
   offers: 'Offers',
+  adminUsers: 'Admin · Users',
 } as const;
 
 /** Envelope padrão `ApiResponse<T>` para um dado tipo de `data`. */
@@ -29,9 +30,32 @@ export const currencyResponseSchema = z
     code: z.enum(CURRENCY_CODES),
     name: z.string(),
     symbol: z.string(),
+    icon: z.string().nullable(),
     enabled: z.boolean(),
   })
   .openapi('CurrencyResponse');
+
+export const adminUserResponseSchema = z
+  .object({
+    id: z.string().uuid(),
+    name: z.string(),
+    email: z.string(),
+    roles: z.array(z.string()),
+    emailConfirmedAt: z.string().nullable(),
+    disabledAt: z.string().nullable(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+  })
+  .openapi('AdminUserResponse');
+
+export const pagedAdminUserResponseSchema = z
+  .object({
+    items: z.array(adminUserResponseSchema),
+    total: z.number(),
+    page: z.number(),
+    pageSize: z.number(),
+  })
+  .openapi('PagedAdminUserResponse');
 
 export const offerResponseSchema = z
   .object({
