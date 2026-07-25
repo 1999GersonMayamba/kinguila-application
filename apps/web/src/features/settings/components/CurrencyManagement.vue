@@ -2,10 +2,13 @@
 import BaseBadge from '@/shared/components/BaseBadge.vue';
 import BaseButton from '@/shared/components/BaseButton.vue';
 import BaseInput from '@/shared/components/BaseInput.vue';
+import BaseMenu from '@/shared/components/BaseMenu.vue';
+import BaseMenuItem from '@/shared/components/BaseMenuItem.vue';
 import BaseModal from '@/shared/components/BaseModal.vue';
 import BaseTable from '@/shared/components/BaseTable.vue';
 import BaseToggle from '@/shared/components/BaseToggle.vue';
 import type { CurrencyResponse } from '@kinguila/contracts';
+import { Pencil, Trash2 } from 'lucide-vue-next';
 import { onMounted, reactive, ref } from 'vue';
 import { useCurrencyAdmin } from '../composables/useCurrencyAdmin';
 
@@ -88,16 +91,22 @@ onMounted(load);
             @update:model-value="(value) => onToggle(c, value)"
           />
         </td>
-        <td class="cell cell--actions">
-          <BaseButton variant="ghost" @click="openEdit(c)">Editar</BaseButton>
-          <BaseButton
-            v-if="c.enabled"
-            variant="danger"
-            :disabled="busyCode === c.code"
-            @click="confirmingDisable = c"
-          >
-            Eliminar
-          </BaseButton>
+        <td class="cell cell--menu">
+          <BaseMenu>
+            <BaseMenuItem @click="openEdit(c)">
+              <template #icon><Pencil :size="16" /></template>
+              Editar
+            </BaseMenuItem>
+            <BaseMenuItem
+              v-if="c.enabled"
+              danger
+              :disabled="busyCode === c.code"
+              @click="confirmingDisable = c"
+            >
+              <template #icon><Trash2 :size="16" /></template>
+              Eliminar
+            </BaseMenuItem>
+          </BaseMenu>
         </td>
       </tr>
     </BaseTable>
@@ -144,11 +153,8 @@ onMounted(load);
   border-bottom: 1px solid var(--k-gray-100);
   color: var(--k-green-dark);
 }
-.cell--actions {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-  flex-wrap: wrap;
+.cell--menu {
+  text-align: right;
 }
 .currency__error {
   margin: 0 0 0.75rem;

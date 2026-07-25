@@ -2,9 +2,12 @@
 import BaseBadge from '@/shared/components/BaseBadge.vue';
 import BaseButton from '@/shared/components/BaseButton.vue';
 import BaseInput from '@/shared/components/BaseInput.vue';
+import BaseMenu from '@/shared/components/BaseMenu.vue';
+import BaseMenuItem from '@/shared/components/BaseMenuItem.vue';
 import BaseModal from '@/shared/components/BaseModal.vue';
 import BaseTable from '@/shared/components/BaseTable.vue';
 import type { AdminUserResponse } from '@kinguila/contracts';
+import { Ban, KeyRound, Pencil, RotateCcw } from 'lucide-vue-next';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useUserAdmin } from '../composables/useUserAdmin';
 
@@ -40,7 +43,7 @@ watch(searchInput, (term) => {
 const editing = ref<AdminUserResponse | null>(null);
 const editName = ref('');
 const saving = ref(false);
-const resetDoneId = ref<string | null>(null);
+const notice = ref<string | null>(null);
 
 const pageInfo = computed(() => {
   const totalPages = Math.max(Math.ceil(total.value / pageSize), 1);
@@ -63,10 +66,10 @@ async function onSave() {
 async function onReset(user: AdminUserResponse) {
   const ok = await resetPassword(user.id);
   if (ok) {
-    resetDoneId.value = user.id;
+    notice.value = `Email de reset de senha enviado para ${user.email}.`;
     setTimeout(() => {
-      if (resetDoneId.value === user.id) resetDoneId.value = null;
-    }, 2000);
+      notice.value = null;
+    }, 3000);
   }
 }
 
@@ -80,6 +83,7 @@ onMounted(load);
     </div>
 
     <p v-if="error && !editing" class="users__error">{{ error }}</p>
+    <p v-if="notice" class="users__notice">{{ notice }}</p>
 
     <BaseTable :columns="columns" :loading="loading" :empty="items.length === 0" empty-text="Sem utilizadores.">
       <tr v-for="u in items" :key="u.id">
@@ -90,14 +94,23 @@ onMounted(load);
             {{ u.disabledAt ? 'Desativada' : 'Ativa' }}
           </BaseBadge>
         </td>
-        <td class="cell cell--actions">
-          <BaseButton variant="ghost" @click="openEdit(u)">Editar</BaseButton>
-          <BaseButton variant="ghost" @click="setDisabled(u.id, !u.disabledAt)">
-            {{ u.disabledAt ? 'Reativar' : 'Desativar' }}
-          </BaseButton>
-          <BaseButton variant="ghost" @click="onReset(u)">
-            {{ resetDoneId === u.id ? 'Email enviado ✓' : 'Reset senha' }}
-          </BaseButton>
+        <td class="cell cell--menu">
+          <BaseMenu>
+            <BaseMenuItem @click="openEdit(u)">
+              <template #icon><Pencil :size="16" /></template>
+              Editar
+            </BaseMenuItem>
+            <BaseMenuItem @click="setDisabled(u.id, !u.disabledAt)">
+              <template #icon>
+                <component :is="u.disabledAt ? RotateCcw : Ban" :size="16" />
+              </template>
+              {{ u.disabledAt ? 'Reativar' : 'Desativar' }}
+            </BaseMenuItem>
+            <BaseMenuItem @click="onReset(u)">
+              <template #icon><KeyRound :size="16" /></template>
+              Reset senha
+            </BaseMenuItem>
+          </BaseMenu>
         </td>
       </tr>
     </BaseTable>
@@ -138,16 +151,18 @@ onMounted(load);
   border-bottom: 1px solid var(--k-gray-100);
   color: var(--k-green-dark);
 }
-.cell--actions {
-  display: flex;
-  gap: 0.25rem;
-  justify-content: flex-end;
-  flex-wrap: wrap;
+.cell--menu {
+  text-align: right;
 }
 .users__error {
   margin: 0 0 0.75rem;
   font-size: 0.85rem;
   color: #d4183d;
+}
+.users__notice {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--k-green);
 }
 .users__pager {
   display: flex;
