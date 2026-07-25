@@ -42,3 +42,19 @@
   --k-gradient-welcome: linear-gradient(180deg, #ffffff 0%, #ffffff 45%, #5b7be8 100%);
   --k-gradient-login: linear-gradient(180deg, #ffffff 0%, #ffffff 55%, #1e2a5a 100%);
 }
+
+/**
+ * Escala de breakpoints (documentação — NÃO usar em @media via var()).
+ *
+ * As @media não leem CSS custom properties, por isso a FONTE DE VERDADE é o módulo
+ * TS `shared/breakpoints.ts`. Estes valores existem aqui só como referência: ao escrever
+ * uma @media usa o literal px correspondente e mantém-no igual ao de `breakpoints.ts`.
+ *
+ *   sm = 480px   (telemóvel grande)
+ *   md = 768px   <- corte principal telemóvel | PC (conteúdo)
+ *   lg = 1024px  <- decisões de shell/sidebar (desktop)
+ *   xl = 1280px  (desktop largo)
+ *
+ * Convenção: mobile-first — estilos base = telemóvel; @media (min-width: …) adiciona
+ * progressivamente o layout de ecrãs maiores.
+ */
