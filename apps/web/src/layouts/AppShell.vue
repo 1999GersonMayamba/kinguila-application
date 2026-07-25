@@ -1,16 +1,67 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/features/auth/stores/auth.store';
 import KLogo from '@/shared/components/KLogo.vue';
-import { Home, LogOut, Settings } from 'lucide-vue-next';
+import {
+  ArrowLeftRight,
+  HelpCircle,
+  Home,
+  LayoutGrid,
+  LogOut,
+  Settings,
+  Tag,
+  User,
+  Wallet,
+} from 'lucide-vue-next';
+import type { Component } from 'vue';
+import { computed } from 'vue';
 import { RouterLink, RouterView, useRouter } from 'vue-router';
 
 const auth = useAuthStore();
 const router = useRouter();
 
-const navItems = [
+interface NavLink {
+  name: string;
+  label: string;
+  icon: Component;
+}
+interface NavSoon {
+  label: string;
+  icon: Component;
+}
+
+// Navegação principal (ordem do Figma). Só as rotas existentes são clicáveis;
+// as ainda não construídas aparecem esbatidas ("em breve").
+const mainNav: NavLink[] = [
   { name: 'home', label: 'Início', icon: Home },
-  { name: 'settings', label: 'Configurações', icon: Settings },
+  { name: 'offers', label: 'Marketplace', icon: LayoutGrid },
 ];
+const mainSoon: NavSoon[] = [
+  { label: 'Operações', icon: ArrowLeftRight },
+  { label: 'Carteira', icon: Wallet },
+  { label: 'Minhas ofertas', icon: Tag },
+  { label: 'Perfil', icon: User },
+];
+const footNav: NavLink[] = [{ name: 'settings', label: 'Configurações', icon: Settings }];
+const footSoon: NavSoon[] = [{ label: 'Ajuda', icon: HelpCircle }];
+
+// Barra inferior (telemóvel): itens principais que existem.
+const mobileNav: NavLink[] = [
+  { name: 'home', label: 'Início', icon: Home },
+  { name: 'offers', label: 'Mercado', icon: LayoutGrid },
+  { name: 'settings', label: 'Config.', icon: Settings },
+];
+
+const initials = computed(() => {
+  const name = auth.user?.name?.trim();
+  if (!name) return 'U';
+  return name
+    .split(/\s+/)
+    .map((word) => word[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+});
+const firstName = computed(() => auth.user?.name?.split(/\s+/)[0] ?? 'utilizador');
 
 async function onLogout() {
   await auth.logout();
@@ -20,15 +71,16 @@ async function onLogout() {
 
 <template>
   <div class="shell">
-    <!-- Sidebar (PC, ≥1024px) — barra lateral verde escura do Figma -->
+    <!-- Sidebar (PC, ≥1024px) — barra lateral verde do Figma -->
     <aside class="shell__sidebar">
       <RouterLink :to="{ name: 'home' }" class="shell__brand">
-        <KLogo :size="30" with-wordmark light />
+        <KLogo :size="30" with-wordmark subtitle light />
       </RouterLink>
+
       <span class="shell__section">Menu</span>
       <nav class="shell__nav">
         <RouterLink
-          v-for="item in navItems"
+          v-for="item in mainNav"
           :key="item.name"
           :to="{ name: item.name }"
           class="shell__link"
@@ -37,11 +89,42 @@ async function onLogout() {
           <component :is="item.icon" :size="18" :stroke-width="1.75" />
           <span>{{ item.label }}</span>
         </RouterLink>
+        <span
+          v-for="item in mainSoon"
+          :key="item.label"
+          class="shell__link shell__link--soon"
+          title="Em breve"
+        >
+          <component :is="item.icon" :size="18" :stroke-width="1.75" />
+          <span>{{ item.label }}</span>
+        </span>
       </nav>
-      <button type="button" class="shell__link shell__logout" @click="onLogout">
-        <LogOut :size="18" :stroke-width="1.75" />
-        <span>Sair</span>
-      </button>
+
+      <div class="shell__foot">
+        <RouterLink
+          v-for="item in footNav"
+          :key="item.name"
+          :to="{ name: item.name }"
+          class="shell__link"
+          active-class="shell__link--active"
+        >
+          <component :is="item.icon" :size="18" :stroke-width="1.75" />
+          <span>{{ item.label }}</span>
+        </RouterLink>
+        <span
+          v-for="item in footSoon"
+          :key="item.label"
+          class="shell__link shell__link--soon"
+          title="Em breve"
+        >
+          <component :is="item.icon" :size="18" :stroke-width="1.75" />
+          <span>{{ item.label }}</span>
+        </span>
+        <button type="button" class="shell__link shell__logout" @click="onLogout">
+          <LogOut :size="18" :stroke-width="1.75" />
+          <span>Sair</span>
+        </button>
+      </div>
     </aside>
 
     <!-- Conteúdo -->
@@ -50,7 +133,10 @@ async function onLogout() {
         <RouterLink :to="{ name: 'home' }" class="shell__topbar-brand">
           <KLogo :size="26" with-wordmark />
         </RouterLink>
-        <span class="shell__hello">Olá, {{ auth.user?.name ?? 'utilizador' }}</span>
+        <div class="shell__user">
+          <span class="shell__hello">Olá, {{ firstName }}</span>
+          <div class="shell__avatar" :title="auth.user?.name ?? 'Utilizador'">{{ initials }}</div>
+        </div>
       </header>
       <main class="shell__content">
         <RouterView />
@@ -60,7 +146,7 @@ async function onLogout() {
     <!-- Bottom tab bar (telemóvel, <1024px) -->
     <nav class="shell__bottom">
       <RouterLink
-        v-for="item in navItems"
+        v-for="item in mobileNav"
         :key="item.name"
         :to="{ name: item.name }"
         class="shell__tab"
@@ -97,9 +183,27 @@ async function onLogout() {
   background: var(--k-surface);
   border-bottom: 1px solid var(--k-border);
 }
+.shell__user {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
 .shell__hello {
   font-size: 0.85rem;
   color: var(--k-gray-500);
+}
+.shell__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--k-green);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 .shell__content {
   flex: 1;
@@ -146,7 +250,7 @@ async function onLogout() {
     width: 15rem;
     background: var(--k-green-dark);
     padding: 1.5rem 0.85rem;
-    gap: 0.25rem;
+    gap: 0.15rem;
   }
   .shell__brand {
     padding: 0.35rem 0.5rem;
@@ -164,8 +268,16 @@ async function onLogout() {
   .shell__nav {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.15rem;
     flex: 1;
+  }
+  .shell__foot {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
   .shell__link {
     display: flex;
@@ -192,8 +304,14 @@ async function onLogout() {
     color: var(--k-green);
     font-weight: 600;
   }
+  .shell__link--soon {
+    color: rgba(255, 255, 255, 0.35);
+    cursor: default;
+  }
+  .shell__link--soon:hover {
+    background: none;
+  }
   .shell__logout {
-    margin-top: 0.25rem;
     color: rgba(255, 120, 100, 0.85);
   }
   .shell__logout:hover {
