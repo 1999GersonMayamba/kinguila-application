@@ -37,18 +37,7 @@ export class PasswordResetService implements IPasswordResetService {
     // Anti-enumeração: só geramos token e enviamos se a conta existir; a resposta
     // é sempre genérica.
     if (user) {
-      await this.resetTokens.invalidateAllByUserId(user.id);
-      const token = this.factory.generateToken();
-      await this.resetTokens.create({
-        userId: user.id,
-        tokenHash: this.factory.hash(token),
-        expiresAt: new Date(Date.now() + this.config.tokenTtlSeconds * 1000),
-        consumedAt: null,
-      });
-
-      // Token no fragmento do URL: não vai para logs do servidor nem para o Referer.
-      const link = `${this.normalizedBaseUrl()}/reset-password#token=${token}`;
-      await this.email.send({ to: email, ...buildPasswordResetEmail(link) });
+      await this.sendResetEmail(user.id, email);
     }
 
     return Response.ok(null, 'Se a conta existir, enviámos um link de redefinição.');
@@ -75,6 +64,29 @@ export class PasswordResetService implements IPasswordResetService {
     await this.resetTokens.invalidateAllByUserId(record.userId);
 
     return Response.ok(null, 'Senha redefinida com sucesso.');
+  }
+
+  async requestForUser(userId: string): Promise<Response<null>> {
+    const user = await this.users.findById(userId);
+    if (!user) {
+      return Response.notFound('Utilizador não encontrado.');
+    }
+    await this.sendResetEmail(user.id, user.email);
+    return Response.ok(null, 'Email de redefinição enviado.');
+  }
+
+  /** Gera token, persiste o hash e envia o email de reset para o utilizador. */
+  private async sendResetEmail(userId: string, email: string): Promise<void> {
+    await this.resetTokens.invalidateAllByUserId(userId);
+    const token = this.factory.generateToken();
+    await this.resetTokens.create({
+      userId,
+      tokenHash: this.factory.hash(token),
+      expiresAt: new Date(Date.now() + this.config.tokenTtlSeconds * 1000),
+      consumedAt: null,
+    });
+    const link = `${this.normalizedBaseUrl()}/reset-password#token=${token}`;
+    await this.email.send({ to: email, ...buildPasswordResetEmail(link) });
   }
 
   /** Remove uma eventual barra final para evitar `//reset-password`. */

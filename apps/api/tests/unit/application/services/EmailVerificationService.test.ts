@@ -29,6 +29,7 @@ async function seedUser(users: FakeUserRepository): Promise<User> {
     roles: ['user'],
     emailConfirmedAt: null,
     tokenVersion: 0,
+    disabledAt: null,
   });
 }
 

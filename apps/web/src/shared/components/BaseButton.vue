@@ -2,7 +2,7 @@
 withDefaults(
   defineProps<{
     type?: 'button' | 'submit';
-    variant?: 'primary' | 'success' | 'ghost';
+    variant?: 'primary' | 'success' | 'ghost' | 'danger';
     block?: boolean;
     disabled?: boolean;
   }>(),
@@ -67,5 +67,12 @@ withDefaults(
 }
 .k-btn--ghost:hover:not(:disabled) {
   opacity: 0.8;
+}
+.k-btn--danger {
+  background: #d4183d;
+  color: #fff;
+}
+.k-btn--danger:hover:not(:disabled) {
+  opacity: 0.9;
 }
 </style>

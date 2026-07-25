@@ -25,6 +25,10 @@ export const apiRoutes = {
   },
   currencies: {
     list: `${BASE}/currencies`,
+    listAll: `${BASE}/currencies/all`,
+    byCode: `${BASE}/currencies/:code`,
+    update: `${BASE}/currencies/:code`,
+    setEnabled: `${BASE}/currencies/:code/enabled`,
   },
   offers: {
     list: `${BASE}/offers`,
@@ -32,5 +36,12 @@ export const apiRoutes = {
     create: `${BASE}/offers`,
     update: `${BASE}/offers/:id`,
     remove: `${BASE}/offers/:id`,
+  },
+  adminUsers: {
+    list: `${BASE}/admin/users`,
+    getById: `${BASE}/admin/users/:id`,
+    update: `${BASE}/admin/users/:id`,
+    setDisabled: `${BASE}/admin/users/:id/disabled`,
+    resetPassword: `${BASE}/admin/users/:id/reset-password`,
   },
 } as const;

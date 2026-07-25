@@ -7,6 +7,7 @@ import type { Container } from '../../composition/container';
 import { env } from '../../config/env';
 import { errorHandler } from './middlewares/errorHandler';
 import { buildOpenApiDocument } from './openapi/document';
+import { registerAdminUserRoutes } from './routes/adminUser.routes';
 import { registerAuthRoutes } from './routes/auth.routes';
 import { registerCurrencyRoutes } from './routes/currency.routes';
 import { registerOfferRoutes } from './routes/offer.routes';
@@ -31,8 +32,9 @@ export function createServer(container: Container) {
 
   const { controllers, middlewares } = container;
   registerAuthRoutes(app, controllers.authController, middlewares.requireAuth);
-  registerCurrencyRoutes(app, controllers.currencyController);
+  registerCurrencyRoutes(app, controllers.currencyController, middlewares.requireAuth);
   registerOfferRoutes(app, controllers.offerController, middlewares.requireAuth);
+  registerAdminUserRoutes(app, controllers.adminUserController, middlewares.requireAuth);
 
   app.notFound((c) =>
     c.json({ succeeded: false, message: 'Rota não encontrada.', data: null, errors: [] }, 404),

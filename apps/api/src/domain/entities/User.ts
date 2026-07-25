@@ -13,6 +13,8 @@ export interface User {
    * invalidando instantaneamente todos os tokens (access + refresh) emitidos antes.
    */
   tokenVersion: number;
+  /** Momento em que a conta foi desativada por um admin; null = conta ativa. */
+  disabledAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }

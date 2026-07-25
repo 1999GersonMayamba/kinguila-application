@@ -41,6 +41,7 @@ export class AuthService implements IAuthService {
       roles: [ROLE_CLIENT],
       emailConfirmedAt: null,
       tokenVersion: 0,
+      disabledAt: null,
     });
 
     // O envio do código é não-fatal: se a Resend falhar, a conta fica pendente e
@@ -74,6 +75,11 @@ export class AuthService implements IAuthService {
         403,
         'ACCOUNT_NOT_CONFIRMED',
       );
+    }
+
+    // Conta desativada por um admin: 403 com código próprio.
+    if (user.disabledAt) {
+      return Response.fail('Conta desativada. Contacte o suporte.', [], 403, 'ACCOUNT_DISABLED');
     }
 
     return Response.ok(await this.buildAuthResponse(user), 'Autenticado com sucesso.');

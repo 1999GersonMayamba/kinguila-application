@@ -12,4 +12,9 @@ export interface IPasswordResetService {
   validateToken(request: ValidateResetTokenRequest): Promise<Response<null>>;
   /** Define a nova senha consumindo o token (uso único). */
   reset(request: ResetPasswordRequest): Promise<Response<null>>;
+  /**
+   * Reset disparado por admin: resolve o utilizador por id (404 se não existir),
+   * gera token e envia o email. Distinto do `request` público (anti-enumeração).
+   */
+  requestForUser(userId: string): Promise<Response<null>>;
 }
