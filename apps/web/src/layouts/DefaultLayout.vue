@@ -40,18 +40,23 @@ function logout() {
 
 <style scoped>
 /* Mobile-first: estilos base = telemóvel. */
+.layout {
+  min-height: 100vh;
+  background: var(--k-page-mobile);
+}
 .layout__bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--k-gray-200);
+  background: var(--k-surface);
+  border-bottom: 1px solid var(--k-border);
 }
 .layout__brand {
   font-weight: 700;
   font-size: 1.2rem;
   text-decoration: none;
-  color: var(--k-blue);
+  color: var(--k-green-dark);
 }
 .layout__content {
   padding: 1.25rem;
@@ -63,6 +68,9 @@ function logout() {
 
 /* Desktop (>= md / 768px): conteúdo centrado e largo, mais espaçamento. */
 @media (min-width: 768px) {
+  .layout {
+    background: var(--k-page);
+  }
   .layout__bar {
     padding: 1rem 2rem;
   }
