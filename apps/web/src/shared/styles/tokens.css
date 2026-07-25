@@ -8,6 +8,7 @@
   --k-navy-700: #2d3e7a;
   --k-blue: #5b7be8;
   --k-green: #1faf75;
+  --k-green-dark: #122b1b; /* verde escuro da marca (nova paleta Figma): shell, títulos, nav ativa */
   --k-yellow: #f5b800;
 
   /* Texto / neutros */
@@ -24,6 +25,9 @@
   /* Superfícies */
   --k-surface: #ffffff;
   --k-input-bg: #fafafa;
+  --k-page: #f0f2f0; /* fundo de página no PC (nova paleta) */
+  --k-page-mobile: #f5f6f8; /* fundo de página no telemóvel (nova paleta) */
+  --k-border: #e8e8e8; /* bordas do layout (nova paleta) */
 
   /* Raios (alinhados ao Tailwind usado no design) */
   --k-radius-lg: 0.5rem;
