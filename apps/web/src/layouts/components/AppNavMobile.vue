@@ -46,7 +46,7 @@ defineEmits<{ logout: [] }>();
   justify-content: space-around;
   padding: 0.5rem 0.75rem;
   background: var(--k-surface);
-  border-top: 1px solid var(--k-gray-200);
+  border-top: 1px solid var(--k-border);
   box-shadow: var(--k-shadow-soft);
 }
 .nav-mobile__item {
@@ -55,7 +55,7 @@ defineEmits<{ logout: [] }>();
   align-items: center;
   gap: 0.15rem;
   font-size: 0.7rem;
-  color: var(--k-gray-600);
+  color: var(--k-gray-400);
   text-decoration: none;
   background: none;
   border: none;
@@ -63,6 +63,6 @@ defineEmits<{ logout: [] }>();
   font-family: inherit;
 }
 .nav-mobile__item.router-link-active {
-  color: var(--k-blue);
+  color: var(--k-green-dark);
 }
 </style>
