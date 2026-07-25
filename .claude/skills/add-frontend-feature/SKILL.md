@@ -40,7 +40,17 @@ features/foo/
 - Define as rotas em `features/foo/routes.ts` e agrega-as em `router/index.ts`.
 - Usa `meta: { requiresAuth: true }` quando precisar de sessão.
 
-## 6. Validar
+## 6. Responsividade (telemóvel vs PC)
+- **CSS-first, mobile-first por omissão:** um só template, estilos base = telemóvel,
+  `@media (min-width: …)` adiciona o layout de ecrãs maiores. A maioria das diferenças
+  telemóvel/PC do Figma são o mesmo layout reorganizado — resolve-se em CSS.
+- **Escape hatch só quando a estrutura diverge mesmo** (ex.: nav de topo vs barra inferior):
+  ramifica só esse pedaço com `v-if` alimentado por `useBreakpoints`
+  (`shared/composables/useBreakpoints.ts`).
+- **Breakpoints** vêm de `shared/breakpoints.ts` (corte principal `md` = 768px). Nunca
+  inventes deteção de dispositivo própria. Detalhe em `docs/frontend-architecture.md` §6.
+
+## 7. Validar
 ```bash
 bun run --cwd apps/web typecheck
 bun run lint
@@ -52,4 +62,5 @@ bun run lint
 - [ ] Composable com estado reativo
 - [ ] Views + componentes pequenos e focados
 - [ ] Rotas agregadas no `router/index.ts`
+- [ ] Responsividade: CSS-first mobile-first; `useBreakpoints` só onde a estrutura diverge
 - [ ] `typecheck` + `lint` ok
