@@ -60,7 +60,7 @@ export function installMatchMedia(initialWidth: number): MatchMediaHandle {
     },
     cleanup() {
       registry.length = 0;
-      delete (globalThis as unknown as { window?: unknown }).window;
+      (globalThis as unknown as { window?: unknown }).window = undefined;
     },
   };
 }

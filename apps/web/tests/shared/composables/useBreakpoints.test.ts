@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'bun:test';
 import { effectScope } from 'vue';
 import { useBreakpoints } from '../../../src/shared/composables/useBreakpoints';
-import { installMatchMedia, type MatchMediaHandle } from '../../helpers/matchMedia';
+import { type MatchMediaHandle, installMatchMedia } from '../../helpers/matchMedia';
 
 let mm: MatchMediaHandle | undefined;
 

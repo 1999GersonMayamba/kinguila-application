@@ -1,5 +1,5 @@
-import { computed, onScopeDispose, readonly, ref } from 'vue';
 import { BREAKPOINTS, type Breakpoint, minWidthQuery } from '@/shared/breakpoints';
+import { computed, onScopeDispose, readonly, ref } from 'vue';
 
 /**
  * Deteção reativa da viewport, baseada em `window.matchMedia` (mobile-first).
