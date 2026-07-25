@@ -54,7 +54,7 @@ const cards = [
   margin: 0 0 0.25rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--k-navy);
+  color: var(--k-green-dark);
 }
 .home__subtitle {
   margin: 0;
@@ -85,7 +85,7 @@ const cards = [
   margin: 0.75rem 0 0.25rem;
   font-size: 1.05rem;
   font-weight: 600;
-  color: var(--k-navy);
+  color: var(--k-green-dark);
 }
 .home__card-desc {
   margin: 0;

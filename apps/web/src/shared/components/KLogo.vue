@@ -5,13 +5,15 @@ withDefaults(
     size?: number;
     withWordmark?: boolean;
     gradient?: boolean;
+    /** Variante para fundos escuros (ex.: sidebar verde): badge verde de acento + wordmark branco. */
+    light?: boolean;
   }>(),
-  { size: 48, withWordmark: false, gradient: false },
+  { size: 48, withWordmark: false, gradient: false, light: false },
 );
 </script>
 
 <template>
-  <div class="k-logo">
+  <div class="k-logo" :class="{ 'k-logo--light': light }">
     <div
       class="k-logo__badge"
       :class="{ 'k-logo__badge--gradient': gradient }"
@@ -51,5 +53,14 @@ withDefaults(
 .k-logo__wordmark {
   color: var(--k-navy);
   font-weight: 700;
+}
+
+/* Variante clara (fundos escuros): badge verde de acento + wordmark branco. */
+.k-logo--light .k-logo__badge {
+  background: var(--k-green);
+  box-shadow: 0 8px 20px rgba(31, 175, 117, 0.3);
+}
+.k-logo--light .k-logo__wordmark {
+  color: #fff;
 }
 </style>

@@ -30,7 +30,7 @@ const active = ref('currencies');
   margin: 0 0 1rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--k-navy);
+  color: var(--k-green-dark);
 }
 .settings__panel {
   margin-top: 1.25rem;

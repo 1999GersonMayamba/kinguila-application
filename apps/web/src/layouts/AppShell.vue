@@ -20,11 +20,12 @@ async function onLogout() {
 
 <template>
   <div class="shell">
-    <!-- Sidebar (desktop) -->
+    <!-- Sidebar (PC, ≥1024px) — barra lateral verde escura do Figma -->
     <aside class="shell__sidebar">
       <RouterLink :to="{ name: 'home' }" class="shell__brand">
-        <KLogo :size="32" with-wordmark />
+        <KLogo :size="30" with-wordmark light />
       </RouterLink>
+      <span class="shell__section">Menu</span>
       <nav class="shell__nav">
         <RouterLink
           v-for="item in navItems"
@@ -46,6 +47,9 @@ async function onLogout() {
     <!-- Conteúdo -->
     <div class="shell__main">
       <header class="shell__topbar">
+        <RouterLink :to="{ name: 'home' }" class="shell__topbar-brand">
+          <KLogo :size="26" with-wordmark />
+        </RouterLink>
         <span class="shell__hello">Olá, {{ auth.user?.name ?? 'utilizador' }}</span>
       </header>
       <main class="shell__content">
@@ -53,7 +57,7 @@ async function onLogout() {
       </main>
     </div>
 
-    <!-- Bottom tab bar (mobile) -->
+    <!-- Bottom tab bar (telemóvel, <1024px) -->
     <nav class="shell__bottom">
       <RouterLink
         v-for="item in navItems"
@@ -70,10 +74,11 @@ async function onLogout() {
 </template>
 
 <style scoped>
+/* Mobile-first: base = telemóvel (sidebar escondida, bottom bar visível). */
 .shell {
   min-height: 100vh;
   display: flex;
-  background: var(--k-gray-100);
+  background: var(--k-page-mobile);
 }
 .shell__sidebar {
   display: none;
@@ -87,10 +92,10 @@ async function onLogout() {
 .shell__topbar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 1rem 1.5rem;
-  background: #fff;
-  border-bottom: 1px solid var(--k-gray-200);
+  justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  background: var(--k-surface);
+  border-bottom: 1px solid var(--k-border);
 }
 .shell__hello {
   font-size: 0.85rem;
@@ -99,14 +104,13 @@ async function onLogout() {
 .shell__content {
   flex: 1;
   padding: 1.25rem;
-  /* Espaço para a bottom bar em mobile. */
-  padding-bottom: 5rem;
+  padding-bottom: 5rem; /* espaço para a bottom bar */
   max-width: 1100px;
   width: 100%;
   margin: 0 auto;
 }
 
-/* Bottom tab bar (mobile-first) */
+/* Bottom tab bar (telemóvel) */
 .shell__bottom {
   position: fixed;
   bottom: 0;
@@ -114,8 +118,8 @@ async function onLogout() {
   right: 0;
   display: flex;
   justify-content: space-around;
-  background: #fff;
-  border-top: 1px solid var(--k-gray-200);
+  background: var(--k-surface);
+  border-top: 1px solid var(--k-border);
   padding: 0.4rem 0;
 }
 .shell__tab {
@@ -128,23 +132,34 @@ async function onLogout() {
   font-size: 0.7rem;
 }
 .shell__tab--active {
-  color: var(--k-navy);
+  color: var(--k-green-dark);
 }
 
-/* Desktop (≥1024px): sidebar visível, bottom bar escondida. */
+/* PC (≥1024px = lg, decisão de shell): sidebar visível, bottom bar escondida. */
 @media (min-width: 1024px) {
+  .shell {
+    background: var(--k-page);
+  }
   .shell__sidebar {
     display: flex;
     flex-direction: column;
     width: 15rem;
-    background: #fff;
-    border-right: 1px solid var(--k-gray-200);
-    padding: 1.25rem 1rem;
-    gap: 0.5rem;
+    background: var(--k-green-dark);
+    padding: 1.5rem 0.85rem;
+    gap: 0.25rem;
   }
   .shell__brand {
-    padding: 0.5rem;
-    margin-bottom: 1rem;
+    padding: 0.35rem 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .shell__section {
+    padding: 0 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.3);
   }
   .shell__nav {
     display: flex;
@@ -156,9 +171,9 @@ async function onLogout() {
     display: flex;
     align-items: center;
     gap: 0.65rem;
-    padding: 0.6rem 0.75rem;
-    border-radius: var(--k-radius-lg);
-    color: var(--k-gray-600);
+    padding: 0.65rem 0.75rem;
+    border-radius: var(--k-radius-xl);
+    color: rgba(255, 255, 255, 0.75);
     text-decoration: none;
     font-size: 0.9rem;
     font-weight: 500;
@@ -167,14 +182,30 @@ async function onLogout() {
     cursor: pointer;
     width: 100%;
     font-family: var(--k-font);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .shell__link:hover {
+    background: rgba(255, 255, 255, 0.07);
   }
   .shell__link--active {
-    background: var(--k-gray-100);
-    color: var(--k-navy);
+    background: rgba(31, 175, 117, 0.18);
+    color: var(--k-green);
     font-weight: 600;
   }
   .shell__logout {
-    color: #d4183d;
+    margin-top: 0.25rem;
+    color: rgba(255, 120, 100, 0.85);
+  }
+  .shell__logout:hover {
+    background: rgba(255, 100, 80, 0.1);
+  }
+  /* No PC a marca vive na sidebar; esconde a do topbar. */
+  .shell__topbar-brand {
+    display: none;
+  }
+  .shell__topbar {
+    justify-content: flex-end;
+    padding: 1rem 2rem;
   }
   .shell__content {
     padding: 2rem;

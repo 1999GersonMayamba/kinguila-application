@@ -136,7 +136,7 @@ onMounted(load);
 .cell {
   padding: 0.6rem 0.75rem;
   border-bottom: 1px solid var(--k-gray-100);
-  color: var(--k-navy);
+  color: var(--k-green-dark);
 }
 .cell--actions {
   display: flex;
