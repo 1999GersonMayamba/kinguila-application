@@ -24,6 +24,25 @@ const form = reactive({ name: '', symbol: '', icon: '' });
 const saving = ref(false);
 const saveError = ref<string | null>(null);
 
+// Confirmação antes de desativar/eliminar uma moeda.
+const confirmingDisable = ref<CurrencyResponse | null>(null);
+
+/** Ativar é imediato; desativar pede confirmação primeiro. */
+function onToggle(currency: CurrencyResponse, value: boolean) {
+  if (value) {
+    toggleEnabled(currency.code, true);
+  } else {
+    confirmingDisable.value = currency;
+  }
+}
+
+async function confirmDisable() {
+  const currency = confirmingDisable.value;
+  if (!currency) return;
+  confirmingDisable.value = null;
+  await toggleEnabled(currency.code, false);
+}
+
 function openEdit(currency: CurrencyResponse) {
   editing.value = currency;
   form.name = currency.name;
@@ -66,11 +85,19 @@ onMounted(load);
             :model-value="c.enabled"
             :disabled="busyCode === c.code"
             :label="`Ativar ${c.code}`"
-            @update:model-value="(value) => toggleEnabled(c.code, value)"
+            @update:model-value="(value) => onToggle(c, value)"
           />
         </td>
-        <td class="cell cell--right">
+        <td class="cell cell--actions">
           <BaseButton variant="ghost" @click="openEdit(c)">Editar</BaseButton>
+          <BaseButton
+            v-if="c.enabled"
+            variant="danger"
+            :disabled="busyCode === c.code"
+            @click="confirmingDisable = c"
+          >
+            Eliminar
+          </BaseButton>
         </td>
       </tr>
     </BaseTable>
@@ -91,6 +118,23 @@ onMounted(load);
         </BaseButton>
       </template>
     </BaseModal>
+
+    <!-- Confirmação antes de desativar/eliminar uma moeda -->
+    <BaseModal
+      :open="confirmingDisable !== null"
+      :title="`Eliminar ${confirmingDisable?.code ?? ''}`"
+      @close="confirmingDisable = null"
+    >
+      <p class="currency__confirm">
+        Tens a certeza que queres desativar a moeda
+        <strong>{{ confirmingDisable?.code }}</strong>? Deixa de aparecer para novas ofertas.
+        Não é apagada permanentemente — podes reativá-la mais tarde.
+      </p>
+      <template #footer>
+        <BaseButton variant="ghost" @click="confirmingDisable = null">Cancelar</BaseButton>
+        <BaseButton variant="danger" @click="confirmDisable">Desativar</BaseButton>
+      </template>
+    </BaseModal>
   </div>
 </template>
 
@@ -100,12 +144,21 @@ onMounted(load);
   border-bottom: 1px solid var(--k-gray-100);
   color: var(--k-green-dark);
 }
-.cell--right {
-  text-align: right;
+.cell--actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 .currency__error {
   margin: 0 0 0.75rem;
   font-size: 0.85rem;
   color: #d4183d;
+}
+.currency__confirm {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--k-gray-600);
 }
 </style>

@@ -55,7 +55,7 @@ const emit = defineEmits<{ close: [] }>();
   margin: 0;
   font-size: 1.05rem;
   font-weight: 600;
-  color: var(--k-navy);
+  color: var(--k-green-dark);
 }
 .k-modal__close {
   background: none;

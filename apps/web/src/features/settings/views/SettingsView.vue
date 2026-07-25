@@ -32,7 +32,13 @@ const active = ref('currencies');
   font-weight: 700;
   color: var(--k-green-dark);
 }
+/* Cartão branco sobre o fundo colorido da página (destaque das informações, como no Figma). */
 .settings__panel {
   margin-top: 1.25rem;
+  background: var(--k-surface);
+  border: 1px solid var(--k-border);
+  border-radius: var(--k-radius-2xl);
+  box-shadow: var(--k-shadow-soft);
+  padding: 1.25rem 1.5rem;
 }
 </style>
