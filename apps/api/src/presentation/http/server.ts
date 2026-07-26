@@ -11,6 +11,7 @@ import { registerAdminUserRoutes } from './routes/adminUser.routes';
 import { registerAuthRoutes } from './routes/auth.routes';
 import { registerCurrencyRoutes } from './routes/currency.routes';
 import { registerOfferRoutes } from './routes/offer.routes';
+import { registerWalletRoutes } from './routes/wallet.routes';
 import type { AppEnv } from './types';
 
 /** Cria o app Hono, aplica middlewares globais e regista todas as rotas. */
@@ -34,6 +35,7 @@ export function createServer(container: Container) {
   registerAuthRoutes(app, controllers.authController, middlewares.requireAuth);
   registerCurrencyRoutes(app, controllers.currencyController, middlewares.requireAuth);
   registerOfferRoutes(app, controllers.offerController, middlewares.requireAuth);
+  registerWalletRoutes(app, controllers.walletController, middlewares.requireAuth);
   registerAdminUserRoutes(app, controllers.adminUserController, middlewares.requireAuth);
 
   app.notFound((c) =>

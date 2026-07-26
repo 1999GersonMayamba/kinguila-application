@@ -37,6 +37,10 @@ export const apiRoutes = {
     update: `${BASE}/offers/:id`,
     remove: `${BASE}/offers/:id`,
   },
+  wallet: {
+    me: `${BASE}/wallet`,
+    setListedAmount: `${BASE}/wallet/:currency/listed-amount`,
+  },
   adminUsers: {
     list: `${BASE}/admin/users`,
     getById: `${BASE}/admin/users/:id`,
