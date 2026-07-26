@@ -3,5 +3,6 @@
 export * from './users';
 export * from './currencies';
 export * from './offers';
+export * from './walletBalances';
 export * from './emailVerificationCodes';
 export * from './passwordResetTokens';
