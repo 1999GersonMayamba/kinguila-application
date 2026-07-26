@@ -19,7 +19,7 @@ function mapRow(row: OfferRow): Offer {
     buyCurrency: row.buyCurrency as CurrencyCode,
     // numeric chega como string do driver; converter para number no domínio.
     exchangeRate: Number(row.exchangeRate),
-    availableAmount: Number(row.availableAmount),
+    minimumAmount: Number(row.minimumAmount),
     status: row.status as OfferStatus,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
@@ -37,7 +37,7 @@ export class OfferRepository
       buyCurrency: data.buyCurrency,
       // numeric do Drizzle aceita string; converter de number.
       exchangeRate: data.exchangeRate?.toString(),
-      availableAmount: data.availableAmount?.toString(),
+      minimumAmount: data.minimumAmount?.toString(),
       status: data.status,
     }));
   }

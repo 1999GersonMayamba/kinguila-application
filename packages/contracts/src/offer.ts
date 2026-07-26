@@ -9,13 +9,14 @@ export interface CreateOfferRequest {
   buyCurrency: CurrencyCode;
   /** Taxa: quantas unidades de buyCurrency por 1 unidade de sellCurrency. */
   exchangeRate: number;
-  /** Montante disponível, na moeda vendida. */
-  availableAmount: number;
+  /** Valor mínimo da venda, na moeda de origem (sellCurrency). */
+  minimumAmount: number;
 }
 
 export interface UpdateOfferRequest {
   exchangeRate?: number;
-  availableAmount?: number;
+  /** Valor mínimo da venda, na moeda de origem (sellCurrency). */
+  minimumAmount?: number;
   status?: Extract<OfferStatus, 'active' | 'paused' | 'cancelled'>;
 }
 
@@ -25,7 +26,8 @@ export interface OfferResponse {
   sellCurrency: CurrencyCode;
   buyCurrency: CurrencyCode;
   exchangeRate: number;
-  availableAmount: number;
+  /** Valor mínimo da venda, na moeda de origem (sellCurrency). */
+  minimumAmount: number;
   status: OfferStatus;
   createdAt: string;
   updatedAt: string;

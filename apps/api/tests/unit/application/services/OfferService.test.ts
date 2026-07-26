@@ -15,7 +15,7 @@ function makeRequest(overrides: Partial<CreateOfferRequest> = {}): CreateOfferRe
     sellCurrency: 'AOA',
     buyCurrency: 'BRL',
     exchangeRate: 0.0012,
-    availableAmount: 1_000_000,
+    minimumAmount: 1_000_000,
     ...overrides,
   };
 }
@@ -28,6 +28,7 @@ describe('OfferService.create', () => {
     expect(result.succeeded).toBe(true);
     expect(result.data?.status).toBe('active');
     expect(result.data?.sellerId).toBe('seller-1');
+    expect(result.data?.minimumAmount).toBe(1_000_000);
   });
 
   it('rejeita quando as moedas são iguais', async () => {
@@ -41,6 +42,13 @@ describe('OfferService.create', () => {
   it('rejeita taxa não positiva', async () => {
     const { service } = makeService();
     const result = await service.create(makeRequest({ exchangeRate: 0 }), 'seller-1');
+
+    expect(result.succeeded).toBe(false);
+  });
+
+  it('rejeita valor mínimo não positivo', async () => {
+    const { service } = makeService();
+    const result = await service.create(makeRequest({ minimumAmount: 0 }), 'seller-1');
 
     expect(result.succeeded).toBe(false);
   });
@@ -64,5 +72,49 @@ describe('OfferService.update', () => {
 
     expect(result.succeeded).toBe(false);
     expect(result.statusCode).toBe(403);
+  });
+
+  it('deixa o dono alterar o valor mínimo', async () => {
+    const { service } = makeService();
+    const created = await service.create(makeRequest(), 'seller-1');
+    const id = created.data?.id ?? '';
+
+    const result = await service.update(id, { minimumAmount: 500_000 }, 'seller-1');
+
+    expect(result.succeeded).toBe(true);
+    expect(result.data?.minimumAmount).toBe(500_000);
+  });
+
+  it('rejeita valor mínimo não positivo na atualização', async () => {
+    const { service } = makeService();
+    const created = await service.create(makeRequest(), 'seller-1');
+    const id = created.data?.id ?? '';
+
+    const result = await service.update(id, { minimumAmount: 0 }, 'seller-1');
+
+    expect(result.succeeded).toBe(false);
+  });
+});
+
+describe('OfferService.remove', () => {
+  it('impede que outro utilizador remova a oferta', async () => {
+    const { service } = makeService();
+    const created = await service.create(makeRequest(), 'seller-1');
+    const id = created.data?.id ?? '';
+
+    const result = await service.remove(id, 'intruder');
+
+    expect(result.succeeded).toBe(false);
+    expect(result.statusCode).toBe(403);
+  });
+
+  it('deixa o dono remover a oferta', async () => {
+    const { service } = makeService();
+    const created = await service.create(makeRequest(), 'seller-1');
+    const id = created.data?.id ?? '';
+
+    const result = await service.remove(id, 'seller-1');
+
+    expect(result.succeeded).toBe(true);
   });
 });

@@ -5,9 +5,7 @@ import { computed } from 'vue';
 
 const props = defineProps<{ offer: OfferResponse }>();
 
-const available = computed(() =>
-  formatCurrency(props.offer.availableAmount, props.offer.sellCurrency),
-);
+const minimum = computed(() => formatCurrency(props.offer.minimumAmount, props.offer.sellCurrency));
 </script>
 
 <template>
@@ -19,7 +17,7 @@ const available = computed(() =>
     <p class="offer-card__rate">
       Taxa: 1 {{ offer.sellCurrency }} = {{ offer.exchangeRate }} {{ offer.buyCurrency }}
     </p>
-    <p>Disponível: {{ available }}</p>
+    <p>Mínimo: {{ minimum }}</p>
   </article>
 </template>
 

@@ -13,7 +13,7 @@ export const offers = pgTable(
     buyCurrency: text('buy_currency').notNull(),
     // Montantes monetários em numeric (precisão), nunca float.
     exchangeRate: numeric('exchange_rate', { precision: 18, scale: 6 }).notNull(),
-    availableAmount: numeric('available_amount', { precision: 18, scale: 2 }).notNull(),
+    minimumAmount: numeric('minimum_amount', { precision: 18, scale: 2 }).notNull(),
     status: text('status').notNull().default('active'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),

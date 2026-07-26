@@ -53,8 +53,8 @@ export class OfferService implements IOfferService {
     if (validation) {
       return Response.fail(validation);
     }
-    if (request.exchangeRate <= 0 || request.availableAmount <= 0) {
-      return Response.fail('Taxa e montante disponível têm de ser maiores que zero.');
+    if (request.exchangeRate <= 0 || request.minimumAmount <= 0) {
+      return Response.fail('Taxa e valor mínimo têm de ser maiores que zero.');
     }
 
     const offer = await this.offers.create({
@@ -62,7 +62,7 @@ export class OfferService implements IOfferService {
       sellCurrency: request.sellCurrency,
       buyCurrency: request.buyCurrency,
       exchangeRate: request.exchangeRate,
-      availableAmount: request.availableAmount,
+      minimumAmount: request.minimumAmount,
       status: 'active',
     });
 
@@ -84,13 +84,13 @@ export class OfferService implements IOfferService {
     if (request.exchangeRate !== undefined && request.exchangeRate <= 0) {
       return Response.fail('A taxa tem de ser maior que zero.');
     }
-    if (request.availableAmount !== undefined && request.availableAmount <= 0) {
-      return Response.fail('O montante disponível tem de ser maior que zero.');
+    if (request.minimumAmount !== undefined && request.minimumAmount <= 0) {
+      return Response.fail('O valor mínimo tem de ser maior que zero.');
     }
 
     const updated = await this.offers.update(id, {
       exchangeRate: request.exchangeRate,
-      availableAmount: request.availableAmount,
+      minimumAmount: request.minimumAmount,
       status: request.status,
     });
     if (!updated) {
@@ -133,7 +133,7 @@ export class OfferService implements IOfferService {
       sellCurrency: offer.sellCurrency,
       buyCurrency: offer.buyCurrency,
       exchangeRate: offer.exchangeRate,
-      availableAmount: offer.availableAmount,
+      minimumAmount: offer.minimumAmount,
       status: offer.status,
       createdAt: offer.createdAt.toISOString(),
       updatedAt: offer.updatedAt.toISOString(),

@@ -64,7 +64,7 @@ export const offerResponseSchema = z
     sellCurrency: z.enum(CURRENCY_CODES),
     buyCurrency: z.enum(CURRENCY_CODES),
     exchangeRate: z.number(),
-    availableAmount: z.number(),
+    minimumAmount: z.number(),
     status: z.enum(OFFER_STATUSES),
     createdAt: z.string(),
     updatedAt: z.string(),
