@@ -3,6 +3,7 @@ import { registerAdminUserDocs } from './paths/adminUser.docs';
 import { registerAuthDocs } from './paths/auth.docs';
 import { registerCurrencyDocs } from './paths/currency.docs';
 import { registerOfferDocs } from './paths/offer.docs';
+import { registerWalletDocs } from './paths/wallet.docs';
 import { createRegistry } from './registry';
 
 /**
@@ -15,6 +16,7 @@ export function buildOpenApiDocument() {
   registerAuthDocs(context);
   registerCurrencyDocs(context);
   registerOfferDocs(context);
+  registerWalletDocs(context);
   registerAdminUserDocs(context);
 
   const generator = new OpenApiGeneratorV3(context.registry.definitions);

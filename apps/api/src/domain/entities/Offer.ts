@@ -12,8 +12,8 @@ export interface Offer {
   buyCurrency: CurrencyCode;
   /** Unidades de buyCurrency por 1 unidade de sellCurrency. */
   exchangeRate: number;
-  /** Montante disponível, na moeda vendida. */
-  availableAmount: number;
+  /** Valor mínimo da venda, na moeda de origem (sellCurrency). */
+  minimumAmount: number;
   status: OfferStatus;
   createdAt: Date;
   updatedAt: Date;

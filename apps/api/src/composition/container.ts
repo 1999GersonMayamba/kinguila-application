@@ -4,6 +4,7 @@ import { CurrencyService } from '../application/services/CurrencyService';
 import { EmailVerificationService } from '../application/services/EmailVerificationService';
 import { OfferService } from '../application/services/OfferService';
 import { PasswordResetService } from '../application/services/PasswordResetService';
+import { WalletService } from '../application/services/WalletService';
 import { env } from '../config/env';
 import { createDatabase } from '../infrastructure/database/client';
 import { JwtTokenService } from '../infrastructure/identity/JwtTokenService';
@@ -16,10 +17,12 @@ import { EmailVerificationCodeRepository } from '../infrastructure/repositories/
 import { OfferRepository } from '../infrastructure/repositories/OfferRepository';
 import { PasswordResetTokenRepository } from '../infrastructure/repositories/PasswordResetTokenRepository';
 import { UserRepository } from '../infrastructure/repositories/UserRepository';
+import { WalletBalanceRepository } from '../infrastructure/repositories/WalletBalanceRepository';
 import { AdminUserController } from '../presentation/http/controllers/AdminUserController';
 import { AuthController } from '../presentation/http/controllers/AuthController';
 import { CurrencyController } from '../presentation/http/controllers/CurrencyController';
 import { OfferController } from '../presentation/http/controllers/OfferController';
+import { WalletController } from '../presentation/http/controllers/WalletController';
 import { authMiddleware } from '../presentation/http/middlewares/authMiddleware';
 import { ttlToSeconds } from '../shared/ttl';
 
@@ -52,6 +55,7 @@ export function buildContainer() {
   const offerRepository = new OfferRepository(db);
   const emailVerificationCodeRepository = new EmailVerificationCodeRepository(db);
   const passwordResetTokenRepository = new PasswordResetTokenRepository(db);
+  const walletRepository = new WalletBalanceRepository(db);
 
   // Serviços
   const emailVerificationService = new EmailVerificationService(
@@ -86,6 +90,7 @@ export function buildContainer() {
   const currencyService = new CurrencyService(currencyRepository);
   const offerService = new OfferService(offerRepository, currencyRepository);
   const adminUserService = new AdminUserService(userRepository, passwordResetService);
+  const walletService = new WalletService(walletRepository);
 
   // Controllers
   const authController = new AuthController(
@@ -96,13 +101,20 @@ export function buildContainer() {
   const currencyController = new CurrencyController(currencyService);
   const offerController = new OfferController(offerService);
   const adminUserController = new AdminUserController(adminUserService);
+  const walletController = new WalletController(walletService);
 
   // Middleware de autenticação (valida o JWT e o tokenVersion contra a BD)
   const requireAuth = authMiddleware(tokenService, userRepository);
 
   return {
     db,
-    controllers: { authController, currencyController, offerController, adminUserController },
+    controllers: {
+      authController,
+      currencyController,
+      offerController,
+      walletController,
+      adminUserController,
+    },
     middlewares: { requireAuth },
     integrations: { exchangeRateProvider, emailProvider },
   };

@@ -7,6 +7,7 @@ export const tags = {
   auth: 'Auth',
   currencies: 'Currencies',
   offers: 'Offers',
+  wallet: 'Wallet',
   adminUsers: 'Admin · Users',
 } as const;
 
@@ -64,7 +65,7 @@ export const offerResponseSchema = z
     sellCurrency: z.enum(CURRENCY_CODES),
     buyCurrency: z.enum(CURRENCY_CODES),
     exchangeRate: z.number(),
-    availableAmount: z.number(),
+    minimumAmount: z.number(),
     status: z.enum(OFFER_STATUSES),
     createdAt: z.string(),
     updatedAt: z.string(),
@@ -79,6 +80,14 @@ export const pagedOfferResponseSchema = z
     pageSize: z.number(),
   })
   .openapi('PagedOfferResponse');
+
+export const walletBalanceResponseSchema = z
+  .object({
+    currency: z.enum(CURRENCY_CODES),
+    balance: z.number(),
+    listedAmount: z.number(),
+  })
+  .openapi('WalletBalanceResponse');
 
 export const authResponseSchema = z
   .object({
